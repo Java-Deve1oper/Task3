@@ -37,7 +37,7 @@ if ($count == 1) {
 
 
 
-    header("location:panel.php?uname=$uName");
+    header("location:panel.php");
 } else {
     $error = "Your Login Name or Password is invalid";
 

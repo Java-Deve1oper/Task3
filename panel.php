@@ -3,7 +3,7 @@ session_start();
 require("connection.php");
 
 
-if ($_SESSION["login_user"] == $_REQUEST["uname"]) {
+if ($_SESSION["login_user"] != null) {
 
     if ($_SESSION['logging'] == 1) {
 ?>
@@ -74,6 +74,19 @@ if ($_SESSION["login_user"] == $_REQUEST["uname"]) {
                     opacity: 0.8;
                     position: fixed;
                     bottom: 23px;
+                    right: 28px;
+                    width: 280px;
+                }
+
+                .open-editbutton {
+                    background-color: #4CAF50;
+                    color: white;
+                    padding: 16px 20px;
+                    border: none;
+                    cursor: pointer;
+                    opacity: 0.8;
+                    position: fixed;
+                    bottom: 73px;
                     right: 28px;
                     width: 280px;
                 }
@@ -160,7 +173,7 @@ if ($_SESSION["login_user"] == $_REQUEST["uname"]) {
                 #customers th {
                     padding-top: 12px;
                     padding-bottom: 12px;
-                    text-align: left;
+                    text-align: center;
                     background-color: #4CAF50;
                     color: white;
                 }
@@ -176,12 +189,12 @@ if ($_SESSION["login_user"] == $_REQUEST["uname"]) {
                     text-align: center;
                 }
             </style>
-        </head>
+           </head>
 
         <body>
             <!-- //---------------------------------------- Header ----------------------------------------------- -->
             <div class="header">
-                <a href="#default" class="logo"><?php echo $_SESSION["login_user"]; ?></a>
+                <a href="#default" class="logo"><?php echo ucfirst($_SESSION["login_user"]); ?></a>
                 <div class="header-right">
                     <a class="active" href="#home">Home</a>
                     <a href="#contact">Contact</a>
@@ -202,7 +215,7 @@ if ($_SESSION["login_user"] == $_REQUEST["uname"]) {
                     </tr>
                     <?php
 
-                    $query = "SELECT * FROM products Where userid = ".$_SESSION['user_id'];
+                    $query = "SELECT * FROM products Where userid = " . $_SESSION['user_id'];
                     $result = mysqli_query($conn, $query);
 
                     $count = mysqli_num_rows($result);
@@ -214,18 +227,18 @@ if ($_SESSION["login_user"] == $_REQUEST["uname"]) {
                             <td>' . '<img src="uploads/' . $row['pimage'] . '" height="100" width="100"/>' . '</td>
                             <td>' . $row["pname"] . '</td>
                             <td>' . $row["pmodel"] . '</td>
-                            <td>' . $row["prate"] . '</td>
+                            <td>' . $row["prate"] . ".00 ₹" . '</td>
                             <td>' . $row["pstatus"] . '</td>
-                            <td>' . '<a href="deleteData.php?uname='.$_SESSION["login_user"].'&deleteData=delete&id='.$row["pid"].'">Delete</a>'.'</td>
+                            <td>' . '<a href="deleteData.php?uname=' . $_SESSION["login_user"] . '&deleteData=delete&id=' . $row["pid"] . '">Delete</a>' . '</td>
                           </tr>';
                         }
                     }
-                  //|| ' . '<a href="editData(' . $row["pid"] . ')">Edit</a>' 
+                    //|| ' . '<a href="editData(' . $row["pid"] . ')">Edit</a>' 
                     ?>
                 </table>
             </div>
             <!-- //--------------------------------- POP UP Insert Button ------------------------------------------ -->
-
+            <button class="open-editbutton" onclick="editForm()">Edit Data</button>
             <button class="open-button" onclick="openForm()">Insert Data</button>
 
             <div class="form-popup" id="myForm">
@@ -239,7 +252,8 @@ if ($_SESSION["login_user"] == $_REQUEST["uname"]) {
                     <br>
 
                     <label for="product-name"><b>Product Name</b></label>
-                    <input type="text" placeholder="Enter Product Name" name="product_name" required>
+                    <input type="text" placeholder="Enter Product Name" name="product_name"  required>
+                   
 
                     <label for="product-model"><b>Product Model</b></label>
                     <input type="text" placeholder="Enter Product Model" name="product_model" required>
@@ -255,7 +269,69 @@ if ($_SESSION["login_user"] == $_REQUEST["uname"]) {
                 </form>
             </div>
 
+
+            <div class="form-popup" id="myEditForm">
+                <form action="insertEditData.php" class="form-container" method="post" enctype='multipart/form-data'>
+                    <h1>Edit Product Data</h1>
+                    <?php
+                    $query = "SELECT pid FROM products Where userid = " . $_SESSION['user_id'];
+                    $result = mysqli_query($conn, $query);
+
+                    $count = mysqli_num_rows($result);
+
+                    ?>
+                    <label for="Select Ids">
+                        <b>choose Id to updates :</b>
+                    </label>
+                    <select id="pId" name="proId">
+                        <?php
+                        if ($count > 0) {
+                            foreach ($result as $row) {
+                                echo "<option value=" . $row['pid'] . ">" . $row['pid'] . "</option>";
+                            }
+                        } else {
+                            echo "<option value=>No Id Available !</option>";
+                        }
+                        ?>
+                    </select>
+                    <br>
+
+                    <br>
+                    <label for="psw"><b>Upload Product Image</b></label>
+                    <br>
+                    <input type="file" name="file" />
+                    <br>
+                    <br>
+
+                    <label for="product-name"><b>Product Name</b></label>
+                    <input type="text" placeholder="Enter Product Name" name="product_name" >
+                    
+
+                    <label for="product-model"><b>Product Model</b></label>
+                    <input type="text" placeholder="Enter Product Model" name="product_model"  >
+
+                    <label for="product-price"><b>Product Price</b></label>
+                    <input type="text" placeholder="Enter Product Price" name="product_price" >
+
+                    <label for="product-status"><b>Product Status</b></label>
+                    <input type="text" placeholder="Enter Product Status" name="product_status">
+
+                    <button type="submit" class="btn" name="submit" value="Edit">Edit Data</button>
+                    <button type="button" class="btn cancel" onclick="closeEditForm()">Close</button>
+                </form>
+            </div>
+
+
+
             <script>
+                function editForm() {
+                    document.getElementById("myEditForm").style.display = "block";
+                }
+
+                function closeEditForm() {
+                    document.getElementById("myEditForm").style.display = "none";
+                }
+
                 function openForm() {
                     document.getElementById("myForm").style.display = "block";
                 }
@@ -272,12 +348,11 @@ if ($_SESSION["login_user"] == $_REQUEST["uname"]) {
 <?php
 
 
-       
-    }
-    // else {
 
-    //     header("location:login.php");
-    // }
+    } else {
+
+        header("location:login.php");
+    }
 } else {
 
     header("location:login.php");
