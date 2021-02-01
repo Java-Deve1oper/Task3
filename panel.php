@@ -189,7 +189,7 @@ if ($_SESSION["login_user"] != null) {
                     text-align: center;
                 }
             </style>
-           </head>
+        </head>
 
         <body>
             <!-- //---------------------------------------- Header ----------------------------------------------- -->
@@ -252,14 +252,14 @@ if ($_SESSION["login_user"] != null) {
                     <br>
 
                     <label for="product-name"><b>Product Name</b></label>
-                    <input type="text" placeholder="Enter Product Name" name="product_name"  required>
-                   
+                    <input type="text" placeholder="Enter Product Name" name="product_name" required>
+
 
                     <label for="product-model"><b>Product Model</b></label>
                     <input type="text" placeholder="Enter Product Model" name="product_model" required>
 
                     <label for="product-price"><b>Product Price</b></label>
-                    <input type="text" placeholder="Enter Product Price" name="product_price" required>
+                    <input type="text" placeholder="Enter Product Price" name="product_price" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" required>
 
                     <label for="product-status"><b>Product Status</b></label>
                     <input type="text" placeholder="Enter Product Status" name="product_status" required>
@@ -304,14 +304,14 @@ if ($_SESSION["login_user"] != null) {
                     <br>
 
                     <label for="product-name"><b>Product Name</b></label>
-                    <input type="text" placeholder="Enter Product Name" name="product_name" >
-                    
+                    <input type="text" placeholder="Enter Product Name" name="product_name">
+
 
                     <label for="product-model"><b>Product Model</b></label>
-                    <input type="text" placeholder="Enter Product Model" name="product_model"  >
+                    <input type="text" placeholder="Enter Product Model" name="product_model">
 
                     <label for="product-price"><b>Product Price</b></label>
-                    <input type="text" placeholder="Enter Product Price" name="product_price" >
+                    <input type="text" placeholder="Enter Product Price"  name="product_price"  oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');">
 
                     <label for="product-status"><b>Product Status</b></label>
                     <input type="text" placeholder="Enter Product Status" name="product_status">
@@ -324,6 +324,17 @@ if ($_SESSION["login_user"] != null) {
 
 
             <script>
+                function validateForm() {
+
+                    var z = document.forms["myEditForm"]["product_price"].value;
+
+                    if (!/^[0-9]+$/.test(z)) {
+                        alert("Please only enter numeric characters only for your Age! (Allowed input:0-9)")
+                    }
+
+                }
+
+
                 function editForm() {
                     document.getElementById("myEditForm").style.display = "block";
                 }
