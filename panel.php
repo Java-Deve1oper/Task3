@@ -75,7 +75,7 @@ if ($_SESSION["login_user"] != null) {
                     position: fixed;
                     bottom: 23px;
                     right: 28px;
-                    width: 280px;
+                    width: 140px;
                 }
 
                 .open-editbutton {
@@ -86,9 +86,9 @@ if ($_SESSION["login_user"] != null) {
                     cursor: pointer;
                     opacity: 0.8;
                     position: fixed;
-                    bottom: 73px;
-                    right: 28px;
-                    width: 280px;
+                    bottom: 23px;
+                    right: 170px;
+                    width: 140px;
                 }
 
                 /* The popup form - hidden by default */
@@ -197,7 +197,7 @@ if ($_SESSION["login_user"] != null) {
                 <a href="#default" class="logo"><?php echo ucfirst($_SESSION["login_user"]); ?></a>
                 <div class="header-right">
                     <a class="active" href="#home">Home</a>
-                    <a href="#contact">Contact</a>
+                    <a href="passwordReset.php">Password reset</a>
                     <a href="logout.php?uname=<?php $_SESSION['login_user'] ?>">logout</a>
                 </div>
             </div>
@@ -283,17 +283,18 @@ if ($_SESSION["login_user"] != null) {
                     <label for="Select Ids">
                         <b>choose Id to updates :</b>
                     </label>
-                    <select id="pId" name="proId">
+                    <select id="pId" name="proId" onchange="showHint($row['pid'])">
                         <?php
                         if ($count > 0) {
                             foreach ($result as $row) {
-                                echo "<option value=" . $row['pid'] . ">" . $row['pid'] . "</option>";
+                                echo "<option value=" . $row['pid'] .">" . $row['pid'] . " </option>";
                             }
                         } else {
                             echo "<option value=>No Id Available !</option>";
                         }
                         ?>
                     </select>
+                    <!-- <h5>Suggestions: <span id="txtHint"></span></h5> -->
                     <br>
 
                     <br>
@@ -307,11 +308,13 @@ if ($_SESSION["login_user"] != null) {
                     <input type="text" placeholder="Enter Product Name" name="product_name">
 
 
+
                     <label for="product-model"><b>Product Model</b></label>
                     <input type="text" placeholder="Enter Product Model" name="product_model">
+                    
 
                     <label for="product-price"><b>Product Price</b></label>
-                    <input type="text" placeholder="Enter Product Price"  name="product_price"  oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');">
+                    <input type="text" placeholder="Enter Product Price" name="product_price" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');">
 
                     <label for="product-status"><b>Product Status</b></label>
                     <input type="text" placeholder="Enter Product Status" name="product_status">
@@ -324,6 +327,23 @@ if ($_SESSION["login_user"] != null) {
 
 
             <script>
+                // function showHint(str) {
+                //     // if (str.length != 0) {
+                //         document.getElementById("txtHint").innerHTML = str;
+                //     //     return;
+                //     // } else {
+                //     //     var xmlhttp = new XMLHttpRequest();
+                //     //     xmlhttp.onreadystatechange = function() {
+                //     //         if (this.readyState == 4 && this.status == 200) {
+                //     //             document.getElementById("txtHint").innerHTML = this.responseText;
+                //     //         }
+                //     //     };
+                //     //     xmlhttp.open("GET", "gethint.php?q=" + str, true);
+                //     //     xmlhttp.send();
+                //     // }
+                // }
+
+
                 function validateForm() {
 
                     var z = document.forms["myEditForm"]["product_price"].value;

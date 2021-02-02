@@ -24,6 +24,11 @@ session_unset();
             font-family: Arial, Helvetica, sans-serif;
             font-weight: bold;
         }
+        .col{
+            padding-left: 140px;
+           
+            
+        }
     </style>
 </head>
 
@@ -55,6 +60,10 @@ session_unset();
                 <button type="submit" name="submit">
                     Submit
                 </button>
+            </div>
+            <div class="col">
+               
+                <a href="forgetPassword.php" style="color:black" class="btn">Forgot password?</a>
             </div>
         </form>
     </div>
