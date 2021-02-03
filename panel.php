@@ -188,7 +188,152 @@ if ($_SESSION["login_user"] != null) {
                 td {
                     text-align: center;
                 }
+
+                /* PoP up edit form  CSS */
+
+                /* Full-width input fields */
+                input[type=text],
+                input[type=password] {
+                    width: 100%;
+                    padding: 12px 20px;
+                    margin: 8px 0;
+                    display: inline-block;
+                    border: 1px solid #ccc;
+                    box-sizing: border-box;
+                }
+
+                /* Set a style for all buttons */
+                button {
+                    background-color: #4CAF50;
+                    color: white;
+                    padding: 14px 20px;
+                    margin: 8px 0;
+                    border: none;
+                    cursor: pointer;
+                    width: 100%;
+                }
+
+                button:hover {
+                    opacity: 0.8;
+                }
+
+                /* Extra styles for the cancel button */
+                .cancelbtn {
+                    width: auto;
+                    padding: 10px 18px;
+                    background-color: #f44336;
+                }
+
+                /* Center the image and position the close button */
+                .imgcontainer {
+                    text-align: center;
+                    margin: 24px 0 12px 0;
+                    position: relative;
+                }
+
+                img.avatar {
+                    width: 20%;
+                    height: 20%;
+                    border-radius: 20%;
+                }
+
+                .container {
+                    padding: 16px;
+                }
+
+                span.psw {
+                    float: right;
+                    padding-top: 16px;
+                }
+
+                /* The Modal (background) */
+                .modal {
+                    display: none;
+                    /* Hidden by default */
+                    position: fixed;
+                    /* Stay in place */
+                    z-index: 1;
+                    /* Sit on top */
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    /* Full width */
+                    height: 100%;
+                    /* Full height */
+                    overflow: auto;
+                    /* Enable scroll if needed */
+                    background-color: rgb(0, 0, 0);
+                    /* Fallback color */
+                    background-color: rgba(0, 0, 0, 0.4);
+                    /* Black w/ opacity */
+                    padding-top: 60px;
+                }
+
+                /* Modal Content/Box */
+                .modal-content {
+                    background-color: #fefefe;
+                    margin: 5% auto 15% auto;
+                    /* 5% from the top, 15% from the bottom and centered */
+                    border: 1px solid #888;
+                    width: 80%;
+                    /* Could be more or less, depending on screen size */
+                }
+
+                /* The Close Button (x) */
+                .close {
+                    position: absolute;
+                    right: 25px;
+                    top: 0;
+                    color: #000;
+                    font-size: 35px;
+                    font-weight: bold;
+                }
+
+                .close:hover,
+                .close:focus {
+                    color: red;
+                    cursor: pointer;
+                }
+
+                /* Add Zoom Animation */
+                .animate {
+                    -webkit-animation: animatezoom 0.6s;
+                    animation: animatezoom 0.6s
+                }
+
+                @-webkit-keyframes animatezoom {
+                    from {
+                        -webkit-transform: scale(0)
+                    }
+
+                    to {
+                        -webkit-transform: scale(1)
+                    }
+                }
+
+                @keyframes animatezoom {
+                    from {
+                        transform: scale(0)
+                    }
+
+                    to {
+                        transform: scale(1)
+                    }
+                }
+
+                /* Change styles for span and cancel button on extra small screens */
+                @media screen and (max-width: 300px) {
+                    span.psw {
+                        display: block;
+                        float: none;
+                    }
+
+                    .cancelbtn {
+                        width: 100%;
+                    }
+                }
             </style>
+
         </head>
 
         <body>
@@ -221,15 +366,26 @@ if ($_SESSION["login_user"] != null) {
                     $count = mysqli_num_rows($result);
                     if ($count > 0) {
                         foreach ($result as $row) {
+
+                            $Qid = $row["pid"];
+                            $Qimage = $row['pimage'];
+                            $Qname = $row["pname"];
+                            $Qmodel = $row["pmodel"];
+                            $Qrate = $row["prate"];
+                            $Qstatus = $row["pstatus"];
+
+
+
+
                             echo '
-                         <tr>
-                            <td>' . $row["pid"] . '</td>
+                         <tr >
+                            <td  onclick="myFunction(' . $Qid . ',' . "'uploads/$Qimage'" . ',' . "'$Qname'" . ',' . "'$Qmodel'" . ',' . "'$Qrate'" . ',' . "'$Qstatus'" . ')">' . $row["pid"] . '</td>
                             <td>' . '<img src="uploads/' . $row['pimage'] . '" height="100" width="100"/>' . '</td>
                             <td>' . $row["pname"] . '</td>
                             <td>' . $row["pmodel"] . '</td>
                             <td>' . $row["prate"] . ".00 ₹" . '</td>
                             <td>' . $row["pstatus"] . '</td>
-                            <td>' . '<a href="deleteData.php?uname=' . $_SESSION["login_user"] . '&deleteData=delete&id=' . $row["pid"] . '">Delete</a>' . '</td>
+                            <td>' . '<a href="deleteData.php?uname=' . $_SESSION["login_user"] . '&deleteData=delete&id=' . $row["pid"] . '" onclick="return confirm(\'Are you sure to delete?\')" >Delete</a>' . '</td>
                           </tr>';
                         }
                     }
@@ -237,8 +393,28 @@ if ($_SESSION["login_user"] != null) {
                     ?>
                 </table>
             </div>
+
+            <script>
+                function confirmation() {
+                    var result = confirm("Are you sure to delete?");
+                    if (result) {
+                        // Delete logic goes here
+                    }
+                }
+
+                function myFunction(id, image, name, model, rate, status) {
+                    document.getElementById("myId").value = id;
+                    document.getElementById("myImg").src = image;
+                    document.getElementById("name").value = name;
+                    document.getElementById("model").value = model;
+                    document.getElementById("price").value = rate;
+                    document.getElementById("status").value = status;
+
+                    document.getElementById('id01').style.display = 'block';
+                }
+            </script>
             <!-- //--------------------------------- POP UP Insert Button ------------------------------------------ -->
-            <button class="open-editbutton" onclick="editForm()">Edit Data</button>
+
             <button class="open-button" onclick="openForm()">Insert Data</button>
 
             <div class="form-popup" id="myForm">
@@ -269,79 +445,60 @@ if ($_SESSION["login_user"] != null) {
                 </form>
             </div>
 
+            <!-- ================== Edit form ====================== -->
 
-            <div class="form-popup" id="myEditForm">
-                <form action="insertEditData.php" class="form-container" method="post" enctype='multipart/form-data'>
-                    <h1>Edit Product Data</h1>
-                    <?php
-                    $query = "SELECT pid FROM products Where userid = " . $_SESSION['user_id'];
-                    $result = mysqli_query($conn, $query);
+            <div id="id01" class="modal">
 
-                    $count = mysqli_num_rows($result);
+                <form class="modal-content animate" action="insertEditData.php" method="post">
+                    <div class="imgcontainer">
+                        <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+                        <img id="myImg" src="" alt="Avatar" class="avatar">
+                    </div>
+                    <div class="container">
+                        
+                        <label for="Product-ID"><b>Product ID</b></label>
+                        <input type="text" placeholder="Dont Change this" id="myId" name="product_id" required>
+                        <label for="Product-Image"><b>Product Image</b></label>
+                        <input type="file" name="file" />
+                        <label for="Product-Name"><b>Product Name</b></label>
+                        <input type="text" placeholder="Enter Product Name" id="name" name="product_name" required>
+                        <label for="Product-Model"><b>Product Model</b></label>
+                        <input type="text" placeholder="Enter Product Model" id="model" name="product_model" required>
+                        <label for="Product-Price"><b>Product Price</b></label>
+                        <input type="text" placeholder="Enter Product Price" id="price" name="product_price" required>
 
-                    ?>
-                    <label for="Select Ids">
-                        <b>choose Id to updates :</b>
-                    </label>
-                    <select id="pId" name="proId" onchange="showHint($row['pid'])">
-                        <?php
-                        if ($count > 0) {
-                            foreach ($result as $row) {
-                                echo "<option value=" . $row['pid'] .">" . $row['pid'] . " </option>";
-                            }
-                        } else {
-                            echo "<option value=>No Id Available !</option>";
-                        }
-                        ?>
-                    </select>
-                    <!-- <h5>Suggestions: <span id="txtHint"></span></h5> -->
-                    <br>
+                        <label for="Product-Status"><b>Product Status</b></label>
+                        <input type="text" placeholder="Enter Product Status" id="status" name="product_status" required>
 
-                    <br>
-                    <label for="psw"><b>Upload Product Image</b></label>
-                    <br>
-                    <input type="file" name="file" />
-                    <br>
-                    <br>
+                        <button type="submit" class="btn" name="submit" value="Edit">Update</button>
 
-                    <label for="product-name"><b>Product Name</b></label>
-                    <input type="text" placeholder="Enter Product Name" name="product_name">
+                    </div>
 
-
-
-                    <label for="product-model"><b>Product Model</b></label>
-                    <input type="text" placeholder="Enter Product Model" name="product_model">
-                    
-
-                    <label for="product-price"><b>Product Price</b></label>
-                    <input type="text" placeholder="Enter Product Price" name="product_price" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');">
-
-                    <label for="product-status"><b>Product Status</b></label>
-                    <input type="text" placeholder="Enter Product Status" name="product_status">
-
-                    <button type="submit" class="btn" name="submit" value="Edit">Edit Data</button>
-                    <button type="button" class="btn cancel" onclick="closeEditForm()">Close</button>
+                    <div class="container" style="background-color:#f1f1f1">
+                        <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+                    </div>
                 </form>
             </div>
 
 
 
             <script>
-                // function showHint(str) {
-                //     // if (str.length != 0) {
-                //         document.getElementById("txtHint").innerHTML = str;
-                //     //     return;
-                //     // } else {
-                //     //     var xmlhttp = new XMLHttpRequest();
-                //     //     xmlhttp.onreadystatechange = function() {
-                //     //         if (this.readyState == 4 && this.status == 200) {
-                //     //             document.getElementById("txtHint").innerHTML = this.responseText;
-                //     //         }
-                //     //     };
-                //     //     xmlhttp.open("GET", "gethint.php?q=" + str, true);
-                //     //     xmlhttp.send();
-                //     // }
-                // }
+                var modal = document.getElementById('id01');
+
+                // When the user clicks anywhere outside of the modal, close it
+                window.onclick = function(event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
+
+
+
+
+
+
+                //==================================================================================
+
 
 
                 function validateForm() {
@@ -355,13 +512,6 @@ if ($_SESSION["login_user"] != null) {
                 }
 
 
-                function editForm() {
-                    document.getElementById("myEditForm").style.display = "block";
-                }
-
-                function closeEditForm() {
-                    document.getElementById("myEditForm").style.display = "none";
-                }
 
                 function openForm() {
                     document.getElementById("myForm").style.display = "block";
