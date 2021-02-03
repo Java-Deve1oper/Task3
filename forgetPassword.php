@@ -1,5 +1,7 @@
 <?php
 session_start();
+
+
 ?>
 
 <html>
@@ -75,55 +77,11 @@ session_start();
         });
 
 
-        document.getElementById("forgetpasswordfrompass").style.display = "none";
-        document.getElementById("forgetpasswordfromusername").style.display = "block";
+       
     </script>
 
 
-    <div id="forgetpasswordfromusername">
-        <form>
-            <div class="fheading">
-                <h3>Forget Password</h3>
-            </div>
-            <div class="input-forgetpass">
-                <label for="enter your username"><b>username:</b></label>
-                <input type="text" id="fname" name="fname" onkeyup="showHint(this.value)" placeholder="enter your username...">
-            </div>
-            <span id='usernamemessage'></span>
-            <br>
-        </form>
-    </div>
-    <script>
-        function showHint(str) {
-            if (str.length == 0) {
-                document.getElementById("usernamemessage").innerHTML = "";
-                document.getElementById("forgetpasswordfrompass").style.display = "none";
-                document.getElementById("forgetpasswordfromusername").style.display = "block";
-                return;
-            } else if (str.length > 1) {
-                var xmlhttp = new XMLHttpRequest();
-                xmlhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
-
-                        if (this.response == "not found") {
-                            $('#usernamemessage').html(this.responseText).css('color', 'red');
-                            // document.getElementById("txtHint").innerHTML = this.responseText;
-                            document.getElementById("forgetpasswordfrompass").style.display = "none";
-                            document.getElementById("forgetpasswordfromusername").style.display = "block";
-                        } else {
-                            document.getElementById("forgetpasswordfrompass").style.display = "block";
-                            document.getElementById("forgetpasswordfromusername").style.display = "none";
-                        }
-
-                    }
-                };
-                xmlhttp.open("GET", "gethint.php?q=" + str, true);
-                xmlhttp.send();
-            }
-            document.getElementById("forgetpasswordfrompass").style.display = "none";
-            document.getElementById("forgetpasswordfromusername").style.display = "block";
-        }
-    </script>
+    
 </body>
 
 </html>

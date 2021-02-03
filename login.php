@@ -63,7 +63,7 @@ session_unset();
             </div>
             <div class="col">
                
-                <a href="forgetPassword.php" style="color:black" class="btn">Forgot password?</a>
+                <a href="forgetpasswordusername.php" style="color:black" class="btn">Forgot password?</a>
             </div>
         </form>
     </div>
